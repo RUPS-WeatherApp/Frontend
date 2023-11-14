@@ -7,8 +7,12 @@ import { useRef, useState, useEffect } from 'react';
 import Menu from './components/Menu/Menu';
 import { Sidebar, MenuItem } from 'react-pro-sidebar';
 import SidebarDrawer from './components/SidebarDrawer/SidebarDrawer';
-import WeatherApp from './pages/test';
+// import WeatherApp from './pages/test';
 import WeatherMap from './components/WeatherMap/WeatherMap';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Home from './pages/Home/Home';
+import SearchPage from './pages/Search/Search';
+import InfoPage from './pages/Info/Info';
 
 function App() {
   const appBarRef = useRef(null);
@@ -47,7 +51,7 @@ function App() {
               </Tooltip>
 
             </Hidden>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component={Link} to={"/"} sx={{ textDecoration: "none", color: "white"}}>
               WeatherAPP
             </Typography>
 
@@ -60,43 +64,45 @@ function App() {
                 <StyledInputBase
                   placeholder="Search…"
                   inputProps={{ 'aria-label': 'search' }}
+                  onKeyUp={(e) => {
+                    if (e.key === 'Enter') {
+                      window.location.href = `/search/${e.target.value}`;
+                    }
+                  }
+                  }
                 />
               </Search>
 
             </Hidden>
             <Box sx={{ flexGrow: 1, }}></Box>
 
-            <Button color="inherit">INFO</Button>
+            <Button color="inherit" component={Link} to={"/info"}>INFO</Button>
           </Toolbar>
         </Container>
       </AppBar>
 
-      <Grid container>
-
+      <Grid container sx={{ display: 'flex' }}>
         <Hidden lgDown>
-          <Grid item xs={12} lg={4} xl={3} sx={{ height: `calc(100vh - ${appBarHeight}px)`, overflowY: "auto" }}>
-
+          <Grid item xs="auto" sx={{ height: `calc(100vh - ${appBarHeight}px)`, overflowY: 'auto' }}>
             <Sidebar style={{ height: '100%' }}>
               <Menu />
             </Sidebar>
           </Grid>
         </Hidden>
 
-        <Grid item xs={12} lg={8} xl={9} sx={{ height: `calc(100vh - ${appBarHeight}px)`, overflowY: "auto" }} >
+        <Grid item xs={12} lg sx={{ height: `calc(100vh - ${appBarHeight}px)`, overflowY: 'auto', flexGrow: 1 }}>
 
-          <Box sx={{ p: 2, height: "100" }}>
-              <WeatherMap />
-            <Typography variant="h6" component="div">
-              Dashboard
-            </Typography>
+          <Routes>
+            {/* <Route index element={<WeatherMap maxHeight={`calc(100vh - ${appBarHeight}px)`} />} /> */}
+            <Route index element={<Home maxHeight={`calc(100vh - ${appBarHeight}px)`} />} />
+            <Route path='search/:city' element={<SearchPage maxHeight={`calc(100vh - ${appBarHeight}px)`} />} />
+            <Route path='search' element={<SearchPage maxHeight={`calc(100vh - ${appBarHeight}px)`} />} />
+            <Route path='info' element={<InfoPage maxHeight={`calc(100vh - ${appBarHeight}px)`} />} />
 
-            <Box sx={{ mt: 2, }}>
-              Content
+          </Routes>
 
-              <WeatherApp />
-            </Box>
-
-          </Box>
+          {/* <Box sx={{ p: 2 }}>
+        </Box> */}
         </Grid>
       </Grid>
     </Box >

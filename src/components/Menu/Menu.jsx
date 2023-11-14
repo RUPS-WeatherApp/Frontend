@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Divider, ListItemIcon, ListItemText } from "@mui/material";
 import { Drawer, List, ListItem } from "@mui/material";
 import { IconDashboard, IconCalendar, IconNotes, IconMap, IconMapPinHeart, IconMapPinSearch, IconLocationSearch, IconSearch, IconSatellite } from "@tabler/icons-react";
+import { Link } from 'react-router-dom';
 
 const Menu = () => {
   const [userLocation, setUserLocation] = useState(null);
@@ -58,13 +59,13 @@ const Menu = () => {
       <ListItem disabled dense >
         <ListItemText primary="QUICK LINKS" />
       </ListItem>
-      <ListItem button>
+      <ListItem button component={Link} to="/">
         <ListItemIcon>
           <IconMap />
         </ListItemIcon>
         <ListItemText primary="Standard Map" />
       </ListItem>
-      <ListItem button>
+      <ListItem button component={Link} to="/search">
         <ListItemIcon>
           <IconSearch />
         </ListItemIcon>
@@ -83,7 +84,7 @@ const Menu = () => {
             <ListItemText primary="NEARBY CITIES" />
           </ListItem>
           {nearbyCities.slice(0, 7).map((city, index) => (
-            <ListItem button key={index}>
+            <ListItem button component={Link} to={`/search/${city}`} key={index}>
               <ListItemIcon>
                 <IconMapPinHeart />
               </ListItemIcon>
